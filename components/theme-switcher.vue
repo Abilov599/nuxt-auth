@@ -19,6 +19,7 @@ const isDark = computed({
       aria-label="Theme"
       @click="isDark = !isDark"
     />
+    <!--suppress VueUnrecognizedSlot -->
     <template #fallback>
       <div class="h-8 w-8" />
     </template>

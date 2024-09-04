@@ -16,12 +16,12 @@ const initialState: IAuthState = {
 
 const useAuthState = defineStore("auth", {
   state() {
-    return { ...initialState, token: useCookie("token") || null };
+    return { ...initialState, token: useCookie("accessToken") || null };
   },
 
   getters: {
     isAuthenticated: (state) =>
-      Boolean(state.token && useCookie("token").value),
+      Boolean(state.token && useCookie("accessToken").value),
   },
 
   actions: {
@@ -35,7 +35,7 @@ const useAuthState = defineStore("auth", {
 
     logout() {
       this.reset();
-      useCookie("token", {
+      useCookie("accessToken", {
         maxAge: 0,
         sameSite: true,
         secure: true,

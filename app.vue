@@ -1,13 +1,14 @@
+<!--suppress CssUnusedSymbol -->
 <script lang="ts" setup>
 import { useAuthState } from "~/stores/auth";
 import type { ILoginResponse } from "~/types/common";
 
 const authState = useAuthState();
 
-const { data, status, error } = await useFetch<ILoginResponse>(
+const { data } = await useFetch<ILoginResponse>(
   "https://dummyjson.com/auth/me",
   {
-    headers: { Authorization: `Bearer ${useCookie("token").value}` },
+    headers: { Authorization: `Bearer ${useCookie("accessToken").value}` },
   },
 );
 

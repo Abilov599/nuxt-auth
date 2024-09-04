@@ -13,12 +13,10 @@ interface ILoginResponse {
   token: string;
   refreshToken: string;
 }
-
 interface ILoginForm {
   username?: string;
   password?: string;
 }
-
 interface IRegisterForm {
   name?: string;
   username?: string;
@@ -29,14 +27,12 @@ interface IRegisterForm {
 useHead({
   title: "Auth",
 });
-
 definePageMeta({
   layout: false,
 });
 
 const route = useRoute();
 const router = useRouter();
-
 const authState = useAuthState();
 
 const items = [
@@ -55,14 +51,11 @@ const items = [
 const selectedTab = computed({
   get() {
     const index = items.findIndex((item) => item.key === route.query.tab);
-    if (index === -1) {
-      return 0;
-    }
+    if (index === -1) return 0;
 
     return index;
   },
   set(value) {
-    // Hash is specified here to prevent the page from scrolling to the top
     router.replace({
       query: { tab: items[value].key },
     });
@@ -104,34 +97,30 @@ async function onLogin(event: FormSubmitEvent<ILoginForm>) {
   const { username, password } = event.data;
   if (!username || !password) return;
 
-  try {
-    const { data, status, error } = await useFetch<ILoginResponse>(
-      "https://dummyjson.com/auth/login",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          username,
-          password,
-        } as ILoginForm),
-      },
-    );
+  const { data } = await useFetch<ILoginResponse>(
+    "https://dummyjson.com/auth/login",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        username,
+        password,
+      } as ILoginForm),
+    },
+  );
 
-    if (data?.value) {
-      authState.set(data.value);
-      useCookie("token", {
-        maxAge: 60 * 24 * 28,
-        sameSite: true,
-        secure: true,
-      }).value = data.value.token;
-    }
-
-    loginForm.username = "";
-    loginForm.password = "";
-
-    navigateTo("/");
-  } catch (error: any) {
-    console.log(error);
+  if (data?.value) {
+    authState.set(data.value);
+    useCookie("accessToken", {
+      maxAge: 60 * 24 * 28,
+      sameSite: true,
+      secure: true,
+    }).value = data.value.token;
   }
+
+  loginForm.username = "";
+  loginForm.password = "";
+
+  navigateTo("/");
 }
 
 async function onRegister(event: FormSubmitEvent<IRegisterForm>) {
@@ -153,6 +142,7 @@ async function onRegister(event: FormSubmitEvent<IRegisterForm>) {
     <NuxtLayout name="auth">
       <div class="flex h-screen w-full items-center justify-center">
         <UTabs v-model="selectedTab" :items="items" class="w-96">
+          <!--suppress VueUnrecognizedSlot -->
           <template #item="{ item }">
             <UCard>
               <template #header>
