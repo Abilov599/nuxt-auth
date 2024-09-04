@@ -6,6 +6,7 @@ await authStore.getMe();
 
 <template>
   <NuxtRouteAnnouncer />
+  <NuxtLoadingIndicator />
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
