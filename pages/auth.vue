@@ -1,18 +1,6 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from "#ui/types";
-import { useAuthState } from "~/stores/auth";
 
-interface ILoginResponse {
-  id: number;
-  username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  image: string;
-  token: string;
-  refreshToken: string;
-}
 interface ILoginForm {
   username?: string;
   password?: string;
@@ -24,16 +12,13 @@ interface IRegisterForm {
   confirmPassword?: string;
 }
 
-useHead({
-  title: "Auth",
-});
 definePageMeta({
   layout: false,
 });
 
 const route = useRoute();
 const router = useRouter();
-const authState = useAuthState();
+const authStore = useAuthStore();
 
 const items = [
   {
@@ -97,25 +82,7 @@ async function onLogin(event: FormSubmitEvent<ILoginForm>) {
   const { username, password } = event.data;
   if (!username || !password) return;
 
-  const { data } = await useFetch<ILoginResponse>(
-    "https://dummyjson.com/auth/login",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        username,
-        password,
-      } as ILoginForm),
-    },
-  );
-
-  if (data?.value) {
-    authState.set(data.value);
-    useCookie("accessToken", {
-      maxAge: 60 * 24 * 28,
-      sameSite: true,
-      secure: true,
-    }).value = data.value.token;
-  }
+  await authStore.login({ username, password });
 
   loginForm.username = "";
   loginForm.password = "";
@@ -138,78 +105,77 @@ async function onRegister(event: FormSubmitEvent<IRegisterForm>) {
 }
 </script>
 <template>
-  <div>
-    <NuxtLayout name="auth">
-      <div class="flex h-screen w-full items-center justify-center">
-        <UTabs v-model="selectedTab" :items="items" class="w-96">
-          <!--suppress VueUnrecognizedSlot -->
-          <template #item="{ item }">
-            <UCard>
-              <template #header>
-                <p
-                  class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
+  <Head><Title>Auth</Title></Head>
+  <NuxtLayout name="auth">
+    <div class="flex h-screen w-full items-center justify-center">
+      <UTabs v-model="selectedTab" :items="items" class="w-96">
+        <!--suppress VueUnrecognizedSlot -->
+        <template #item="{ item }">
+          <UCard>
+            <template #header>
+              <p
+                class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
+              >
+                {{ item.label }}
+              </p>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                {{ item.description }}
+              </p>
+            </template>
+
+            <div v-if="item.key === 'login'" class="space-y-3">
+              <UForm
+                :validate="validateLogin"
+                :state="loginForm"
+                class="space-y-4"
+                @submit="onLogin"
+              >
+                <UFormGroup label="Username" name="username">
+                  <UInput v-model="loginForm.username" />
+                </UFormGroup>
+
+                <UFormGroup label="Password" name="password">
+                  <UInput v-model="loginForm.password" type="password" />
+                </UFormGroup>
+
+                <UButton type="submit" class="flex w-full justify-center"
+                  >Login</UButton
                 >
-                  {{ item.label }}
-                </p>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                  {{ item.description }}
-                </p>
-              </template>
+              </UForm>
+            </div>
+            <div v-else-if="item.key === 'register'" class="space-y-3">
+              <UForm
+                :validate="validateRegister"
+                :state="registerForm"
+                class="space-y-4"
+                @submit="onRegister"
+              >
+                <UFormGroup label="Name" name="name">
+                  <UInput v-model="registerForm.name" />
+                </UFormGroup>
 
-              <div v-if="item.key === 'login'" class="space-y-3">
-                <UForm
-                  :validate="validateLogin"
-                  :state="loginForm"
-                  class="space-y-4"
-                  @submit="onLogin"
-                >
-                  <UFormGroup label="Username" name="username">
-                    <UInput v-model="loginForm.username" />
-                  </UFormGroup>
+                <UFormGroup label="Username" name="username">
+                  <UInput v-model="registerForm.username" />
+                </UFormGroup>
 
-                  <UFormGroup label="Password" name="password">
-                    <UInput v-model="loginForm.password" type="password" />
-                  </UFormGroup>
+                <UFormGroup label="Password" name="password">
+                  <UInput v-model="registerForm.password" type="password" />
+                </UFormGroup>
+                <UFormGroup label="Confirm password" name="confirmPassword">
+                  <UInput
+                    v-model="registerForm.confirmPassword"
+                    type="password"
+                  />
+                </UFormGroup>
 
-                  <UButton type="submit" class="flex w-full justify-center"
-                    >Login</UButton
-                  >
-                </UForm>
-              </div>
-              <div v-else-if="item.key === 'register'" class="space-y-3">
-                <UForm
-                  :validate="validateRegister"
-                  :state="registerForm"
-                  class="space-y-4"
-                  @submit="onRegister"
-                >
-                  <UFormGroup label="Name" name="name">
-                    <UInput v-model="registerForm.name" />
-                  </UFormGroup>
-
-                  <UFormGroup label="Username" name="username">
-                    <UInput v-model="registerForm.username" />
-                  </UFormGroup>
-
-                  <UFormGroup label="Password" name="password">
-                    <UInput v-model="registerForm.password" type="password" />
-                  </UFormGroup>
-                  <UFormGroup label="Confirm password" name="confirmPassword">
-                    <UInput
-                      v-model="registerForm.confirmPassword"
-                      type="password"
-                    />
-                  </UFormGroup>
-
-                  <UButton type="submit" class="flex w-full justify-center"
-                    >Register
-                  </UButton>
-                </UForm>
-              </div>
-            </UCard>
-          </template>
-        </UTabs>
-      </div>
-    </NuxtLayout>
-  </div>
+                <UButton type="submit" class="flex w-full justify-center"
+                  >Register
+                </UButton>
+              </UForm>
+            </div>
+          </UCard>
+        </template>
+      </UTabs>
+    </div>
+  </NuxtLayout>
 </template>

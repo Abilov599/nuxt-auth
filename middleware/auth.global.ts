@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
 export default defineNuxtRouteMiddleware(async (to) => {
-  const { isAuthenticated } = useAuthState();
+  const { isAuthenticated } = useAuthStore();
 
   if (!isAuthenticated && to.name !== "auth") {
     return navigateTo("auth");

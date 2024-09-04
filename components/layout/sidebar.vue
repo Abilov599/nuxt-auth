@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { useAuthState } from "~/stores/auth";
-
-const loggedUser = useAuthState();
+const authStore = useAuthStore();
 
 const items = [
   [
@@ -36,7 +34,7 @@ const items = [
       label: "Log out",
       icon: "i-heroicons-arrow-right-circle-20-solid",
       click: () => {
-        loggedUser.logout();
+        authStore.logout();
         navigateTo("/auth");
       },
     },
@@ -77,7 +75,7 @@ const links = [
               class="size-5 rounded-full"
               src="https://avatars.githubusercontent.com/u/739984?v=4"
             />
-            {{ loggedUser.username }}</span
+            {{ authStore.username }}</span
           ></UButton
         >
       </UDropdown>

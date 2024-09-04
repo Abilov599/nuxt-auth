@@ -14,7 +14,7 @@ const initialState: IAuthState = {
   refreshToken: null,
 };
 
-const useAuthState = defineStore("auth", {
+export const useAuthStore = defineStore("auth", {
   state() {
     return { ...initialState, token: useCookie("accessToken") || null };
   },
@@ -22,6 +22,8 @@ const useAuthState = defineStore("auth", {
   getters: {
     isAuthenticated: (state) =>
       Boolean(state.token && useCookie("accessToken").value),
+
+    user: (state) => state,
   },
 
   actions: {
@@ -31,6 +33,40 @@ const useAuthState = defineStore("auth", {
 
     set(user: ILoginResponse) {
       this.$patch(user);
+    },
+
+    async login(payload: { username: string; password: string }) {
+      const { data } = await useFetch<ILoginResponse>(
+        "https://dummyjson.com/auth/login",
+        {
+          method: "POST",
+          body: JSON.stringify(payload),
+        },
+      );
+
+      if (data?.value) {
+        this.set(data.value);
+        useCookie("accessToken", {
+          maxAge: 60 * 24 * 28,
+          sameSite: true,
+          secure: true,
+        }).value = data.value.token;
+      }
+    },
+
+    async getMe() {
+      const { data } = await useFetch<ILoginResponse>(
+        "https://dummyjson.com/auth/me",
+        {
+          headers: {
+            Authorization: `Bearer ${useCookie("accessToken").value}`,
+          },
+        },
+      );
+
+      if (data?.value) {
+        this.set(data.value);
+      }
     },
 
     logout() {
@@ -43,5 +79,3 @@ const useAuthState = defineStore("auth", {
     },
   },
 });
-
-export { useAuthState };

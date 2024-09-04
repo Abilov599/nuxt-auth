@@ -1,10 +1,9 @@
 <script setup lang="ts">
-const { data } = await useFetch("https://jsonplaceholder.typicode.com/posts");
+const authStore = useAuthStore();
+const { user } = authStore;
 </script>
 
 <template>
   <Head><Title>CRM</Title></Head>
-  <div>
-    {{ data }}
-  </div>
+  <div>{{ user.email }}</div>
 </template>

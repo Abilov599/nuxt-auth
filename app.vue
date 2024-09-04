@@ -1,20 +1,7 @@
 <!--suppress CssUnusedSymbol -->
 <script lang="ts" setup>
-import { useAuthState } from "~/stores/auth";
-import type { ILoginResponse } from "~/types/common";
-
-const authState = useAuthState();
-
-const { data } = await useFetch<ILoginResponse>(
-  "https://dummyjson.com/auth/me",
-  {
-    headers: { Authorization: `Bearer ${useCookie("accessToken").value}` },
-  },
-);
-
-if (data?.value) {
-  authState.set(data.value);
-}
+const authStore = useAuthStore();
+await authStore.getMe();
 </script>
 
 <template>
