@@ -1,9 +1,12 @@
 <script setup lang="ts">
 const authStore = useAuthStore();
 const { user } = authStore;
+
+useSeoMeta({
+  title: "CRM",
+});
 </script>
 
 <template>
-  <Head><Title>CRM</Title></Head>
   <div>{{ user.email }}</div>
 </template>

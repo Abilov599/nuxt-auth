@@ -21,6 +21,7 @@
     "@nuxt/image": "^1.8.0",
     "@nuxt/ui": "^2.18.4",
     "@pinia/nuxt": "^0.5.4",
+    "git-format-staged": "^3.1.1",
     "husky": "^9.1.5",
     "prettier": "3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6"
