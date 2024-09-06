@@ -9,6 +9,7 @@ await authStore.getMe();
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <UNotifications />
 </template>
 
 <!--<style scoped>-->
