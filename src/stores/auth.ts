@@ -11,7 +11,7 @@ const initialState: IAuthState = {
 export const useAuthStore = defineStore("auth", {
   state: (): IAuthState => ({
     ...initialState,
-    token: useCookie("accessToken").valu,
+    token: useCookie("accessToken").value,
   }),
 
   getters: {
