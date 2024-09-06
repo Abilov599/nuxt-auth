@@ -1,6 +1,12 @@
-# Nuxt 3 Minimal Starter
+# Implementing User Auth using [DummyJSON - Auth Docs](https://dummyjson.com/docs/auth) with [Nuxt 3](https://nuxt.com/)
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Login
+
+username: emilys
+
+password: emilyspass
+
+* You can use any user's credentials from [dummyjson.com/users](https://dummyjson.com/users)
 
 ## Setup
 
