@@ -1,6 +1,5 @@
 <script setup lang="ts">
-const authStore = useAuthStore();
-const { user } = authStore;
+const { user } = useUserStore();
 
 const toast = useToast();
 
@@ -13,7 +12,7 @@ useSeoMeta({
   <div>
     <UButton
       label="Show toast"
-      @click="toast.add({ title: user.email ?? '' })"
+      @click="toast.add({ title: user.username ?? '' })"
     />
   </div>
 </template>

@@ -15,6 +15,7 @@ interface IRegisterForm {
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
+const userStore = useUserStore();
 
 const items = [
   {
@@ -79,6 +80,7 @@ async function onLogin(event: FormSubmitEvent<ILoginForm>) {
   if (!username || !password) return;
 
   await authStore.login({ username, password });
+  await userStore.getUser();
 
   loginForm.username = "";
   loginForm.password = "";

@@ -1,7 +1,7 @@
 <!--suppress CssUnusedSymbol -->
 <script lang="ts" setup>
-const authStore = useAuthStore();
-await authStore.getMe();
+const userStore = useUserStore();
+await userStore.getUser();
 </script>
 
 <template>
