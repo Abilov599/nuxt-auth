@@ -1,5 +1,5 @@
 // noinspection JSUnusedGlobalSymbols
-export default defineNuxtRouteMiddleware(async (to) => {
+export default defineNuxtRouteMiddleware((to) => {
   const { isAuthenticated } = useAuthStore();
 
   if (!isAuthenticated && to.name !== "auth") {

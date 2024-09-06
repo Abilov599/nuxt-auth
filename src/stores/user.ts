@@ -1,15 +1,37 @@
-interface IUserState {
-  // id: number | null;
-  username: string | null;
-  // email: string | null;
-  // firstName: string | null;
-  // lastName: string | null;
-  // gender: string | null;
-  // image: string | null;
-}
+import type { IGetMeResponse } from "~/types/common";
+import type { Nullable } from "~/types/utils";
+
+interface IUserState extends Nullable<IGetMeResponse> {}
 
 const initialState: IUserState = {
+  id: null,
+  firstName: null,
+  lastName: null,
+  maidenName: null,
+  age: null,
+  gender: null,
+  email: null,
+  phone: null,
   username: null,
+  password: null,
+  birthDate: null,
+  image: null,
+  bloodGroup: null,
+  height: null,
+  weight: null,
+  eyeColor: null,
+  hair: null,
+  ip: null,
+  address: null,
+  macAddress: null,
+  university: null,
+  bank: null,
+  company: null,
+  ein: null,
+  ssn: null,
+  userAgent: null,
+  crypto: null,
+  role: null,
 };
 
 export const useUserStore = defineStore("user", {

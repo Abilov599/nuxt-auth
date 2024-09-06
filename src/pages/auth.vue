@@ -81,10 +81,6 @@ async function onLogin(event: FormSubmitEvent<ILoginForm>) {
 
   await authStore.login({ username, password });
   await userStore.getUser();
-
-  loginForm.username = "";
-  loginForm.password = "";
-
   navigateTo("/");
 }
 
@@ -112,7 +108,7 @@ definePageMeta({
 </script>
 <template>
   <div class="flex h-screen w-full items-center justify-center">
-    <UTabs v-model="selectedTab" :items="items" class="w-96">
+    <UTabs v-model="selectedTab" :items="items" class="relative w-96 space-y-2">
       <!--suppress VueUnrecognizedSlot -->
       <template #item="{ item }">
         <UCard>

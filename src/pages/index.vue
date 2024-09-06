@@ -12,7 +12,7 @@ useSeoMeta({
   <div>
     <UButton
       label="Show toast"
-      @click="toast.add({ title: user.username ?? '' })"
+      @click="toast.add({ title: user.username ?? 'No data' })"
     />
   </div>
 </template>

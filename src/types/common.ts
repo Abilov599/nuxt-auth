@@ -1,17 +1,10 @@
+import type { IUser } from "~/types/user";
+
 interface ILoginResponse {
-  id: number;
-  username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  image: string;
   token: string;
   refreshToken: string;
 }
 
-type Nullable<T> = {
-  [P in keyof T]: T[P] | null;
-};
+interface IGetMeResponse extends IUser {}
 
-export type { ILoginResponse, Nullable };
+export type { ILoginResponse, IGetMeResponse };

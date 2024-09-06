@@ -75,7 +75,7 @@ const links = [
           <span class="flex gap-2">
             <NuxtImg
               class="size-5 rounded-full"
-              src="https://avatars.githubusercontent.com/u/739984?v=4"
+              :src="`${userStore.user.image}`"
             />
             {{ userStore.user.username }}</span
           ></UButton

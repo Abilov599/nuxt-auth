@@ -1,17 +1,18 @@
+import type { Nullable } from "~/types/utils";
 import type { ILoginResponse } from "~/types/common";
 
-interface IAuthState {
-  token: string | null;
-}
+interface IAuthState extends Nullable<ILoginResponse> {}
 
 const initialState: IAuthState = {
   token: null,
+  refreshToken: null,
 };
 
 export const useAuthStore = defineStore("auth", {
-  state() {
-    return { token: useCookie("accessToken") || null };
-  },
+  state: (): IAuthState => ({
+    ...initialState,
+    token: useCookie("accessToken").valu,
+  }),
 
   getters: {
     isAuthenticated: (state) =>
@@ -37,7 +38,10 @@ export const useAuthStore = defineStore("auth", {
       );
 
       if (data?.value) {
-        this.set({ token: data.value.token || null });
+        this.set({
+          token: data.value.token,
+          refreshToken: data.value.refreshToken,
+        });
         useCookie("accessToken", {
           maxAge: 60 * 24 * 28,
           sameSite: true,
