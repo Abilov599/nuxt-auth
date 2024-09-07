@@ -12,5 +12,13 @@ export default defineNuxtConfig({
   //   pageTransition: { name: "page", mode: "out-in" },
   //   layoutTransition: { name: "layout", mode: "out-in" },
   // },
-  modules: ["@nuxt/ui", "@nuxt/eslint", "@pinia/nuxt", "@nuxt/image"],
+  modules: [
+    "@nuxt/ui",
+    "@nuxt/eslint",
+    "@pinia/nuxt",
+    "@nuxt/image",
+    "@nuxtjs/i18n",
+    "@vueuse/nuxt",
+    "dayjs-nuxt",
+  ],
 });
