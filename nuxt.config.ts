@@ -8,6 +8,16 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
+  i18n: {
+    lazy: true,
+    strategy: "no_prefix",
+    langDir: "locales",
+    defaultLocale: "en",
+    locales: [
+      { code: "en", language: "en-US", file: "en.json" },
+      { code: "az", language: "az-Az", file: "az.json" },
+    ],
+  },
   // app: {
   //   pageTransition: { name: "page", mode: "out-in" },
   //   layoutTransition: { name: "layout", mode: "out-in" },
@@ -20,5 +30,6 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@vueuse/nuxt",
     "dayjs-nuxt",
+    "nuxt-typed-router",
   ],
 });
