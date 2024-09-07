@@ -6,7 +6,7 @@ username: emilys
 
 password: emilyspass
 
-* You can use any user's credentials from [dummyjson.com/users](https://dummyjson.com/users)
+- You can use any user's credentials from [dummyjson.com/users](https://dummyjson.com/users)
 
 ## Setup
 
