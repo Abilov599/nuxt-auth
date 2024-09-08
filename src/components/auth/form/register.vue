@@ -2,17 +2,17 @@
 import type { FormError, FormSubmitEvent } from "#ui/types";
 
 interface IRegisterForm {
-  name?: string;
-  username?: string;
-  password?: string;
-  confirmPassword?: string;
+  name: string;
+  username: string;
+  password: string;
+  confirmPassword: string;
 }
 
-const registerForm = reactive<IRegisterForm>({
-  username: undefined,
-  name: undefined,
-  password: undefined,
-  confirmPassword: undefined,
+const form = reactive<IRegisterForm>({
+  username: "",
+  name: "",
+  password: "",
+  confirmPassword: "",
 });
 
 const validateRegister = (state: IRegisterForm): FormError[] => {
@@ -33,10 +33,10 @@ async function onRegister(event: FormSubmitEvent<IRegisterForm>) {
 
   // add request
 
-  registerForm.name = "";
-  registerForm.username = "";
-  registerForm.password = "";
-  registerForm.confirmPassword = "";
+  form.name = "";
+  form.username = "";
+  form.password = "";
+  form.confirmPassword = "";
 
   await navigateTo("/auth?tab=login");
 }
@@ -45,23 +45,23 @@ async function onRegister(event: FormSubmitEvent<IRegisterForm>) {
 <template>
   <UForm
     :validate="validateRegister"
-    :state="registerForm"
+    :state="form"
     class="space-y-4"
     @submit="onRegister"
   >
     <UFormGroup label="Name" name="name">
-      <UInput v-model="registerForm.name" />
+      <UInput v-model="form.name" />
     </UFormGroup>
 
     <UFormGroup label="Username" name="username">
-      <UInput v-model="registerForm.username" />
+      <UInput v-model="form.username" />
     </UFormGroup>
 
     <UFormGroup label="Password" name="password">
-      <UInput v-model="registerForm.password" type="password" />
+      <UInput v-model="form.password" type="password" />
     </UFormGroup>
     <UFormGroup label="Confirm password" name="confirmPassword">
-      <UInput v-model="registerForm.confirmPassword" type="password" />
+      <UInput v-model="form.confirmPassword" type="password" />
     </UFormGroup>
 
     <UButton type="submit" block>Register </UButton>

@@ -12,7 +12,7 @@ const toast = useToast();
 
 const isLoading = ref(false);
 
-const loginForm = reactive<ILoginForm>({
+const form = reactive<ILoginForm>({
   username: "",
   password: "",
 });
@@ -52,20 +52,16 @@ async function onLogin(event: FormSubmitEvent<ILoginForm>) {
 <template>
   <UForm
     :validate="validateLogin"
-    :state="loginForm"
+    :state="form"
     class="space-y-4"
     @submit="onLogin"
   >
     <UFormGroup label="Username" name="username">
-      <UInput v-model="loginForm.username" :disabled="isLoading" />
+      <UInput v-model="form.username" :disabled="isLoading" />
     </UFormGroup>
 
     <UFormGroup label="Password" name="password">
-      <UInput
-        v-model="loginForm.password"
-        type="password"
-        :disabled="isLoading"
-      />
+      <UInput v-model="form.password" type="password" :disabled="isLoading" />
     </UFormGroup>
 
     <UButton type="submit" block :loading="isLoading"> Login </UButton>
