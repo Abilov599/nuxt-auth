@@ -68,12 +68,6 @@ async function onLogin(event: FormSubmitEvent<ILoginForm>) {
       />
     </UFormGroup>
 
-    <UButton
-      type="submit"
-      class="flex w-full justify-center"
-      :loading="isLoading"
-    >
-      Login
-    </UButton>
+    <UButton type="submit" block :loading="isLoading"> Login </UButton>
   </UForm>
 </template>

@@ -64,8 +64,6 @@ async function onRegister(event: FormSubmitEvent<IRegisterForm>) {
       <UInput v-model="registerForm.confirmPassword" type="password" />
     </UFormGroup>
 
-    <UButton type="submit" class="flex w-full justify-center"
-      >Register
-    </UButton>
+    <UButton type="submit" block>Register </UButton>
   </UForm>
 </template>
