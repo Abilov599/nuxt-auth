@@ -27,8 +27,6 @@ const validateLogin = (state: ILoginForm): FormError[] => {
 async function onLogin(event: FormSubmitEvent<ILoginForm>) {
   const { username, password } = event.data;
 
-  if (!username || !password) return;
-
   isLoading.value = true;
 
   const { status, error } = await authStore.login({ username, password });
