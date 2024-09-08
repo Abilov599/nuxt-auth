@@ -35,26 +35,33 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   async function login(payload: { username: string; password: string }) {
-    const { data } = await useFetch<ILoginResponse>(
+    const { status, error, data } = await useFetch<ILoginResponse>(
       "https://dummyjson.com/auth/login",
       {
         method: "POST",
         body: JSON.stringify(payload),
         pick: ["token", "refreshToken"],
+
+        onResponse({ request, response, options }) {
+          set({
+            token: response._data.token,
+            refreshToken: response._data.refreshToken,
+          });
+
+          useCookie("accessToken", {
+            maxAge: 60 * 24 * 28,
+            sameSite: true,
+            secure: true,
+          }).value = response._data.token;
+        },
       },
     );
 
-    if (data?.value) {
-      set({
-        token: data.value.token,
-        refreshToken: data.value.refreshToken,
-      });
-      useCookie("accessToken", {
-        maxAge: 60 * 24 * 28,
-        sameSite: true,
-        secure: true,
-      }).value = data.value.token;
-    }
+    return {
+      status: status.value,
+      error: error.value,
+      tokens: data.value,
+    };
   }
 
   return { tokens, isAuthenticated, reset, set, logout, login };

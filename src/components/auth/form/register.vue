@@ -69,5 +69,3 @@ async function onRegister(event: FormSubmitEvent<IRegisterForm>) {
     </UButton>
   </UForm>
 </template>
-
-<style scoped></style>

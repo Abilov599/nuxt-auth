@@ -54,9 +54,16 @@ export const useUserStore = defineStore("user", {
       const { data } = await useFetch<IUserState>(
         "https://dummyjson.com/auth/me",
         {
-          headers: {
-            Authorization: `Bearer ${useCookie("accessToken").value}`,
+          // on request interceptor
+          onRequest({ request, options }) {
+            options.headers = (options.headers as Record<string, string>) || {};
+            options.headers.Authorization = `Bearer ${useCookie("accessToken").value}`;
           },
+
+          // // fetch options
+          // headers: {
+          //   Authorization: `Bearer ${useCookie("accessToken").value}`,
+          // },
         },
       );
 
