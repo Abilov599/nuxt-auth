@@ -76,6 +76,7 @@ const links = [
             <NuxtImg
               class="size-5 rounded-full"
               :src="`${userStore.user.image}`"
+              alt="profile-picture"
             />
             {{ userStore.user.username }}</span
           ></UButton

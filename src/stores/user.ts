@@ -51,7 +51,7 @@ export const useUserStore = defineStore("user", {
     },
 
     async getUser() {
-      const { data } = await useFetch<IUserState>(
+      const { status, error, data, refresh } = await useFetch<IUserState>(
         "https://dummyjson.com/auth/me",
         {
           // on request interceptor
@@ -70,6 +70,13 @@ export const useUserStore = defineStore("user", {
       if (data?.value) {
         this.set(data.value);
       }
+
+      return {
+        status: status.value,
+        error: error.value,
+        user: data.value,
+        refresh,
+      };
     },
   },
 });
