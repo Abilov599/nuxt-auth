@@ -85,7 +85,9 @@ const links = [
     </div>
     <div>
       <UDivider />
-      <div class="flex justify-center p-1"><ThemeSwitcher /></div>
+      <div class="flex justify-center p-1">
+        <ThemeSwitcher />
+      </div>
     </div>
   </aside>
 </template>
