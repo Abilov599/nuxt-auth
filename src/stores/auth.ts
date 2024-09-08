@@ -40,6 +40,7 @@ export const useAuthStore = defineStore("auth", () => {
       {
         method: "POST",
         body: JSON.stringify(payload),
+        pick: ["token", "refreshToken"],
       },
     );
 

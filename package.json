@@ -1,7 +1,6 @@
 {
   "name": "nuxt-app",
   "private": true,
-  "type": "module",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -11,11 +10,7 @@
     "prepare": "husky",
     "format": "bun prettier . --write"
   },
-  "dependencies": {
-    "appwrite": "^15.0.0",
-    "nuxt": "^3.13.0",
-    "vue": "latest"
-  },
+  "type": "module",
   "devDependencies": {
     "@nuxt/eslint": "^0.5.5",
     "@nuxt/image": "^1.8.0",
@@ -26,6 +21,7 @@
     "@vueuse/nuxt": "^11.0.3",
     "git-format-staged": "^3.1.1",
     "husky": "^9.1.5",
+    "nuxt": "^3.13.1",
     "nuxt-typed-router": "^3.6.5",
     "prettier": "3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6"
