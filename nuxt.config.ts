@@ -29,7 +29,6 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@nuxtjs/i18n",
     "@vueuse/nuxt",
-    "dayjs-nuxt",
     "nuxt-typed-router",
   ],
 });
