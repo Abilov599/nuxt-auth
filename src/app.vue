@@ -1,11 +1,11 @@
 <!--suppress CssUnusedSymbol -->
 <script lang="ts" setup>
-const userStore = useUserStore();
-await userStore.getUser();
+useUserStore().getUser();
 </script>
 
 <template>
   <NuxtRouteAnnouncer />
+  <NuxtLoadingIndicator />
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
