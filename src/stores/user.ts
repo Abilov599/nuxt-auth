@@ -34,6 +34,7 @@ const initialState: IUserState = {
   role: null,
 };
 
+// Options API usage (In my opinion this approach gives better DX, but is not flexible as Composition API)
 export const useUserStore = defineStore("user", {
   state: () => initialState,
 
