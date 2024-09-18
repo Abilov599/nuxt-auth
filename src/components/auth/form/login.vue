@@ -10,7 +10,8 @@ const authStore = useAuthStore();
 const userStore = useUserStore();
 const toast = useToast();
 
-const isLoading = ref(false);
+const isSubmitting = ref(false);
+const isPasswordHidden = ref(true);
 
 const form = reactive<ILoginForm>({
   username: "",
@@ -27,12 +28,12 @@ const validateLogin = (state: ILoginForm): FormError[] => {
 async function onLogin(event: FormSubmitEvent<ILoginForm>) {
   const { username, password } = event.data;
 
-  isLoading.value = true;
+  isSubmitting.value = true;
 
   const { status, error } = await authStore.login({ username, password });
 
   if (status === "error" && error) {
-    isLoading.value = false;
+    isSubmitting.value = false;
     return toast.add({
       title:
         error.data?.message || (error.cause as { message?: string })?.message,
@@ -45,7 +46,7 @@ async function onLogin(event: FormSubmitEvent<ILoginForm>) {
     navigateTo("/");
   }
 
-  isLoading.value = false;
+  isSubmitting.value = false;
 }
 </script>
 
@@ -57,13 +58,31 @@ async function onLogin(event: FormSubmitEvent<ILoginForm>) {
     @submit="onLogin"
   >
     <UFormGroup label="Username" name="username">
-      <UInput v-model="form.username" :disabled="isLoading" />
+      <UInput v-model="form.username" :disabled="isSubmitting" />
     </UFormGroup>
 
     <UFormGroup label="Password" name="password">
-      <UInput v-model="form.password" type="password" :disabled="isLoading" />
+      <div class="relative">
+        <UInput
+          v-model="form.password"
+          :type="isPasswordHidden ? 'password' : 'text'"
+          :disabled="isSubmitting"
+        />
+        <UButton
+          variant="soft"
+          color="white"
+          :padded="false"
+          @click="isPasswordHidden = !isPasswordHidden"
+          class="absolute bottom-[6px] right-[7px]"
+          :icon="
+            isPasswordHidden
+              ? 'heroicons:eye-slash-16-solid'
+              : 'heroicons:eye-16-solid'
+          "
+        />
+      </div>
     </UFormGroup>
 
-    <UButton type="submit" block :loading="isLoading"> Login </UButton>
+    <UButton type="submit" block :loading="isSubmitting"> Login </UButton>
   </UForm>
 </template>

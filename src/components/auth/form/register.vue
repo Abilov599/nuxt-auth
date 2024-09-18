@@ -15,6 +15,10 @@ const form = reactive<IRegisterForm>({
   confirmPassword: "",
 });
 
+const isPasswordHidden = ref(true);
+const isConfirmPasswordHidden = ref(true);
+const isSubmitting = ref(false);
+
 const validateRegister = (state: IRegisterForm): FormError[] => {
   const errors = [];
   if (!state.name) errors.push({ path: "name", message: "Required" });
@@ -32,6 +36,8 @@ async function onRegister(event: FormSubmitEvent<IRegisterForm>) {
   if (!name || !username || !password || !confirmPassword) return;
 
   // add request
+
+  isSubmitting.value = true;
 
   form.name = "";
   form.username = "";
@@ -58,10 +64,44 @@ async function onRegister(event: FormSubmitEvent<IRegisterForm>) {
     </UFormGroup>
 
     <UFormGroup label="Password" name="password">
-      <UInput v-model="form.password" type="password" />
+      <div class="relative">
+        <UInput
+          v-model="form.password"
+          :type="isPasswordHidden ? 'password' : 'text'"
+        />
+        <UButton
+          variant="soft"
+          color="white"
+          :padded="false"
+          @click="isPasswordHidden = !isPasswordHidden"
+          class="absolute bottom-[6px] right-[7px]"
+          :icon="
+            isPasswordHidden
+              ? 'heroicons:eye-slash-16-solid'
+              : 'heroicons:eye-16-solid'
+          "
+        />
+      </div>
     </UFormGroup>
     <UFormGroup label="Confirm password" name="confirmPassword">
-      <UInput v-model="form.confirmPassword" type="password" />
+      <div class="relative">
+        <UInput
+          v-model="form.confirmPassword"
+          :type="isConfirmPasswordHidden ? 'password' : 'text'"
+        />
+        <UButton
+          variant="soft"
+          color="white"
+          :padded="false"
+          @click="isConfirmPasswordHidden = !isConfirmPasswordHidden"
+          class="absolute bottom-[6px] right-[7px]"
+          :icon="
+            isConfirmPasswordHidden
+              ? 'heroicons:eye-slash-16-solid'
+              : 'heroicons:eye-16-solid'
+          "
+        />
+      </div>
     </UFormGroup>
 
     <UButton type="submit" block>Register </UButton>
