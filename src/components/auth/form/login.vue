@@ -1,39 +1,36 @@
 <script setup lang="ts">
-import type { FormError, FormSubmitEvent } from "#ui/types";
+import { useForm } from "vee-validate";
+import validationSchema from "~/schemas/login";
+import nuxtUiConfig from "~/utils/nuxt-ui-error-config";
 
 interface ILoginForm {
   username: string;
   password: string;
 }
 
-const authStore = useAuthStore();
-const userStore = useUserStore();
-const toast = useToast();
-
-const isSubmitting = ref(false);
-const isPasswordHidden = ref(true);
-
-const form = reactive<ILoginForm>({
+const loginForm = reactive<ILoginForm>({
   username: "",
   password: "",
 });
 
-const validateLogin = (state: ILoginForm): FormError[] => {
-  const errors = [];
-  if (!state.username) errors.push({ path: "username", message: "Required" });
-  if (!state.password) errors.push({ path: "password", message: "Required" });
-  return errors;
-};
+const isPasswordHidden = ref(true);
 
-async function onLogin(event: FormSubmitEvent<ILoginForm>) {
-  const { username, password } = event.data;
+const authStore = useAuthStore();
+const userStore = useUserStore();
+const toast = useToast();
 
-  isSubmitting.value = true;
+const { defineField, handleSubmit, isSubmitting, resetForm } = useForm<ILoginForm>({
+  validationSchema,
+  initialValues: loginForm,
+});
 
-  const { status, error } = await authStore.login({ username, password });
+const [username, usernameProps] = defineField("username", nuxtUiConfig);
+const [password, passwordProps] = defineField("password", nuxtUiConfig);
+
+const onSubmit = handleSubmit(async (formData) => {
+  const { status, error } = await authStore.login(formData);
 
   if (status === "error" && error) {
-    isSubmitting.value = false;
     return toast.add({
       title:
         error.data?.message || (error.cause as { message?: string })?.message,
@@ -43,28 +40,22 @@ async function onLogin(event: FormSubmitEvent<ILoginForm>) {
 
   if (status === "success") {
     await userStore.getUser();
+    resetForm();
     navigateTo("/");
   }
-
-  isSubmitting.value = false;
-}
+});
 </script>
 
 <template>
-  <UForm
-    :validate="validateLogin"
-    :state="form"
-    class="space-y-4"
-    @submit="onLogin"
-  >
-    <UFormGroup label="Username" name="username">
-      <UInput v-model="form.username" :disabled="isSubmitting" />
+  <UForm class="space-y-4" :state="loginForm" @submit="onSubmit">
+    <UFormGroup label="Username" name="username" v-bind="usernameProps">
+      <UInput v-model="username" :disabled="isSubmitting" />
     </UFormGroup>
 
-    <UFormGroup label="Password" name="password">
+    <UFormGroup label="Password" name="password" v-bind="passwordProps">
       <div class="relative">
         <UInput
-          v-model="form.password"
+          v-model="password"
           :type="isPasswordHidden ? 'password' : 'text'"
           :disabled="isSubmitting"
         />
@@ -83,6 +74,6 @@ async function onLogin(event: FormSubmitEvent<ILoginForm>) {
       </div>
     </UFormGroup>
 
-    <UButton type="submit" block :loading="isSubmitting"> Login </UButton>
+    <UButton type="submit" block :loading="isSubmitting">Login</UButton>
   </UForm>
 </template>
