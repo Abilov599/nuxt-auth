@@ -1,32 +1,21 @@
-import type { Nullable } from "~/types/utils";
 import type { ILoginResponse } from "~/types/common";
-
-interface IAuthState extends Nullable<ILoginResponse> {}
-
-const initialState: IAuthState = {
-  token: null,
-  refreshToken: null,
-};
 
 // Composition API usage (This approach allows us to create local variables and use them, but we can't do that with Options API)
 export const useAuthStore = defineStore("auth", () => {
   const cookieToken = useCookie("accessToken");
 
-  const tokens = ref<IAuthState>({
-    ...initialState,
-    token: cookieToken.value || null,
-  });
+  const token = ref<string | null>(cookieToken.value || null);
 
   const isAuthenticated = computed(() =>
-    Boolean(tokens.value.token && cookieToken.value),
+    Boolean(token.value && cookieToken.value),
   );
 
   function reset() {
-    tokens.value = initialState;
+    token.value = null;
   }
 
-  function set(payload: IAuthState) {
-    tokens.value = payload;
+  function set(accessToken: string) {
+    token.value = accessToken;
   }
 
   function logout() {
@@ -40,19 +29,16 @@ export const useAuthStore = defineStore("auth", () => {
       {
         method: "POST",
         body: JSON.stringify(payload),
-        pick: ["token", "refreshToken"],
+        pick: ["accessToken"],
 
         onResponse({ response }) {
-          set({
-            token: response._data.token,
-            refreshToken: response._data.refreshToken,
-          });
+          set(response._data.accessToken);
 
           useCookie("accessToken", {
             maxAge: 60 * 24 * 28,
             sameSite: true,
             secure: true,
-          }).value = response._data.token;
+          }).value = response._data.accessToken;
         },
       },
     );
@@ -60,11 +46,11 @@ export const useAuthStore = defineStore("auth", () => {
     return {
       status: status.value,
       error: error.value,
-      tokens: data.value,
+      token: data.value,
     };
   }
 
-  return { tokens, isAuthenticated, reset, set, logout, login };
+  return { token, isAuthenticated, reset, set, logout, login };
 });
 
 if (import.meta.hot) {

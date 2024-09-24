@@ -1,8 +1,7 @@
 import type { IUser } from "~/types/user";
 
 interface ILoginResponse {
-  token: string;
-  refreshToken: string;
+  accessToken: string;
 }
 
 interface IGetMeResponse extends IUser {}

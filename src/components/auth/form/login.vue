@@ -19,10 +19,11 @@ const authStore = useAuthStore();
 const userStore = useUserStore();
 const toast = useToast();
 
-const { defineField, handleSubmit, isSubmitting, resetForm } = useForm<ILoginForm>({
-  validationSchema,
-  initialValues: loginForm,
-});
+const { defineField, handleSubmit, isSubmitting, resetForm } =
+  useForm<ILoginForm>({
+    validationSchema,
+    initialValues: loginForm,
+  });
 
 const [username, usernameProps] = defineField("username", nuxtUiConfig);
 const [password, passwordProps] = defineField("password", nuxtUiConfig);

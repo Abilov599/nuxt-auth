@@ -8,4 +8,4 @@ const validationSchema = toTypedSchema(
   }),
 );
 
-export default validationSchema
+export default validationSchema;
